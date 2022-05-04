@@ -32,13 +32,14 @@ namespace MultiCut
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
                 HtmlGenericControl div = new HtmlGenericControl("div");
-                TableRow tr = new TableRow();
+                TableRow tr = new TableRow();                
                 tr.Height = 50;
                 tr.CssClass = "trBorder";
                 TableCell EmnrNr = new TableCell();
                 EmnrNr.Font.Bold = true;
                 EmnrNr.Font.Size = 100;
                 EmnrNr.Text = rp.EmnrNr + ":";
+                EmnrNr.Width = 20;
                 tr.Cells.Add(EmnrNr);
 
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
@@ -46,7 +47,7 @@ namespace MultiCut
                     
                     TableCell Resultat = new TableCell();
                     Resultat.CssClass = "spaceBetweenTR";
-                    Resultat.Width = 100;
+                    
                     switch (pr.Resultat)
                     {
                         case "Ja":

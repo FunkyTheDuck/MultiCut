@@ -15,7 +15,7 @@
 
     <form runat="server">
         <asp:DropDownList ID="HalNavnBox" runat="server" OnSelectedIndexChanged="HalNavnBox_SelectedIndexChanged"  AutoPostBack="true"/>
-        <asp:Table ID="Table1" runat="server" Width="100%" GridLines="Horizontal"></asp:Table>
+        <asp:Table ID="Table1" runat="server"  GridLines="Horizontal"></asp:Table>
     </form>
 </body>
 </html>
