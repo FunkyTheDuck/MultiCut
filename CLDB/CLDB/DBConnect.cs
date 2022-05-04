@@ -35,7 +35,14 @@ namespace CLDB
             listItems = list.GetItems(caml);
 
             ctx.Load(listItems);
-            ctx.ExecuteQuery();
+            try
+            {
+                ctx.ExecuteQuery();
+            }
+            catch 
+            {
+                return null;
+            }
 
             List<ProductResult> products = new List<ProductResult>();
 
