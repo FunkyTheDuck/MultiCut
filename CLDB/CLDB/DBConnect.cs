@@ -12,20 +12,27 @@ namespace CLDB
 {
     public class DBConnect
     {
+
+        SecureString pssword = new SecureString();
+        string siteUrl = "https://365herningsholm.sharepoint.com/sites/SharePointData";
+        ClientContext ctx;
+        Web web;
+        List list;
+        CamlQuery caml;
+        ListItemCollection listItems;
         public List<ProductResult> GetAll(string Hal)
         {
-            SecureString pssword = new SecureString();
-            string siteUrl = "https://365herningsholm.sharepoint.com/sites/SharePointData";
-            ClientContext ctx = new ClientContext(siteUrl);
-            Web web = ctx.Web;
+            ctx = new ClientContext(siteUrl);
+            web = ctx.Web;
+
             foreach (char c in "igd94ndi".ToCharArray())
             {
                 pssword.AppendChar(c);
             }
             ctx.Credentials = new SharePointOnlineCredentials("nick978g@herningsholm.dk", pssword);
-            List list = web.Lists.GetByTitle("ProductionList");
-            CamlQuery caml = CamlQuery.CreateAllItemsQuery();
-            ListItemCollection listItems = list.GetItems(caml);
+            list = web.Lists.GetByTitle("ProductionList");
+            caml = CamlQuery.CreateAllItemsQuery();
+            listItems = list.GetItems(caml);
 
             ctx.Load(listItems);
             ctx.ExecuteQuery();
@@ -45,6 +52,32 @@ namespace CLDB
                 products.Add(result);
             }
             return products;
-        }        
+        }  
+        
+        public List<string> GetHalls()
+        {
+            ctx = new ClientContext(siteUrl);
+            web = ctx.Web;
+
+            foreach (char c in "igd94ndi".ToCharArray())
+            {
+                pssword.AppendChar(c);
+            }
+            ctx.Credentials = new SharePointOnlineCredentials("nick978g@herningsholm.dk", pssword);
+            list = web.Lists.GetByTitle("ProductionList");
+            caml = CamlQuery.CreateAllItemsQuery();
+            listItems = list.GetItems(caml);
+
+            ctx.Load(listItems);
+            ctx.ExecuteQuery();
+
+            List<string> halls = new List<string>();
+
+            foreach (ListItem item in listItems)
+            {
+                halls.Add(item["Hal"].ToString());
+            }
+            return halls.Distinct().ToList();
+        }
     }
 }

@@ -14,5 +14,10 @@ namespace CLBL
         {
             return dbcon.GetAll(Hal);
         }
+
+        public List<string> GetHalls()
+        {
+            return dbcon.GetHalls();
+        }
     }
 }

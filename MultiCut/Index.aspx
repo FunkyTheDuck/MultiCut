@@ -8,10 +8,14 @@
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="js/Index.js"></script>
     <link href="css/Index.css" rel="stylesheet" />
-    <title></title>    
+    <title></title>
 </head>
 <body>
-    <asp:Label ID="HalNavn" runat="server" Text="Label" Width="100%"></asp:Label>
-    <asp:Table ID="Table1" runat="server" Width="100%" GridLines="Horizontal"></asp:Table>
+
+
+    <form runat="server">
+        <asp:DropDownList ID="HalNavnBox" runat="server" Width="100%" OnSelectedIndexChanged="HalNavnBox_SelectedIndexChanged"  AutoPostBack="true"/>
+        <asp:Table ID="Table1" runat="server" Width="100%" GridLines="Horizontal"></asp:Table>
+    </form>
 </body>
 </html>
