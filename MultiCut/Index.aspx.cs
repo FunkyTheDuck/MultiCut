@@ -38,7 +38,7 @@ namespace MultiCut
                 TableCell EmnrNr = new TableCell();
                 EmnrNr.Font.Bold = true;
                 EmnrNr.Font.Size = 100;
-                EmnrNr.Text = rp.EmnrNr;
+                EmnrNr.Text = rp.EmnrNr + ":";
                 tr.Cells.Add(EmnrNr);
 
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
