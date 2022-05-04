@@ -7,3 +7,12 @@
     font-size:100px;
     font-weight:bold;
 }
+.spaceBetweenTR {
+    border: 1px solid black;
+    text-align: center;
+    width: 100px;
+}
+
+.trBorder {
+    border: 2px solid black;
+}

@@ -34,6 +34,7 @@ namespace MultiCut
                 HtmlGenericControl div = new HtmlGenericControl("div");
                 TableRow tr = new TableRow();
                 tr.Height = 50;
+                tr.CssClass = "trBorder";
                 TableCell EmnrNr = new TableCell();
                 EmnrNr.Font.Bold = true;
                 EmnrNr.Font.Size = 100;
@@ -44,6 +45,7 @@ namespace MultiCut
                 {
                     
                     TableCell Resultat = new TableCell();
+                    Resultat.CssClass = "spaceBetweenTR";
                     Resultat.Width = 100;
                     switch (pr.Resultat)
                     {

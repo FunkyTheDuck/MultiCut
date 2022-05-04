@@ -1,7 +1,7 @@
-﻿//var idleInterval = setInterval("reloadPage()", 10000)
+﻿var idleInterval = setInterval("reloadPage()", 2000)
 
-//function reloadPage() {
-//    location.reload();
+function reloadPage() {
+    location.reload();
     
-//}
+}
 
