@@ -1,4 +1,4 @@
-﻿var idleInterval = setInterval("reloadPage()", 2000)
+﻿var idleInterval = setInterval("reloadPage()", 10000)
 
 function reloadPage() {
     location.reload();
