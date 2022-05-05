@@ -62,7 +62,7 @@ namespace MultiCut
                             Resultat.BackColor = ColorTranslator.FromHtml("#ebeb00");
                             break;
                     }
-                    
+                    Resultat.Text = pr.Tid.Replace(":", "\n");
                     tr.Cells.Add(Resultat);
                 }
                 Table1.Rows.Add(tr);
