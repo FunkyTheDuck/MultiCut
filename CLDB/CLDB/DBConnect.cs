@@ -58,6 +58,7 @@ namespace CLDB
 
                 products.Add(result);
             }
+            products.Reverse();
             return products;
         }  
         

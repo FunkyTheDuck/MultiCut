@@ -31,17 +31,19 @@ namespace MultiCut
 
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
-                HtmlGenericControl div = new HtmlGenericControl("div");
+                TableRow trxkstra = new TableRow();
+                trxkstra.Height = 20;
+                trxkstra.CssClass = "trxkstraBorder";
                 TableRow tr = new TableRow();                
-                tr.Height = 50;
+                tr.Height = 16;
                 tr.CssClass = "trBorder";
                 TableCell EmnrNr = new TableCell();
                 EmnrNr.Font.Bold = true;
-                EmnrNr.Font.Size = 100;
+                EmnrNr.Font.Size = 33;
                 EmnrNr.Text = rp.EmnrNr + ":";
-                EmnrNr.Width = 20;
-                tr.Cells.Add(EmnrNr);
-
+                EmnrNr.Width = 6;
+                
+                tr.Cells.Add(EmnrNr);              
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
                     
@@ -64,6 +66,7 @@ namespace MultiCut
                     tr.Cells.Add(Resultat);
                 }
                 Table1.Rows.Add(tr);
+                Table1.Rows.Add(trxkstra);
             }
             //waitTimer();
         }
