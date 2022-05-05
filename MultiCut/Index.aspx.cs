@@ -76,6 +76,7 @@ namespace MultiCut
                             break;
                     }
                     Resultat.Text = pr.Tid.Replace(":", "\n");
+                    Resultat.Font.Bold = true;
                     tr.Cells.Add(Resultat);
                 }
                 Table1.Rows.Add(tr);
