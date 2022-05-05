@@ -16,6 +16,7 @@ namespace MultiCut
     public partial class WebForm1 : Page
     {
         Repository repo = new Repository();
+        List<ProductResult> oldList;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -29,6 +30,18 @@ namespace MultiCut
 
             List<ProductResult> lpr = repo.GetAll(HalName);
 
+            if(lpr == null)
+            {
+                lpr = oldList;
+                //query fejlede
+            }
+            else
+            {
+                oldList = lpr;
+            }
+
+            if (lpr == null)
+                return;
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
                 TableRow trxkstra = new TableRow();
