@@ -25,7 +25,7 @@ namespace CLDB
             ctx = new ClientContext(siteUrl);
             web = ctx.Web;
 
-            foreach (char c in "igd94ndi".ToCharArray())
+            foreach (char c in "igd94nd".ToCharArray())
             {
                 pssword.AppendChar(c);
             }

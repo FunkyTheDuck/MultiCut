@@ -82,7 +82,6 @@ namespace MultiCut
                 Table1.Rows.Add(tr);
                 Table1.Rows.Add(trxkstra);
             }
-            //waitTimer();
         }
         public void FillComboBox()
         {
@@ -90,12 +89,7 @@ namespace MultiCut
             HalNavnBox.DataSource = halls;
             HalNavnBox.DataBind();
         }
-
-        public void waitTimer()
-        {
-            Thread.Sleep(10000);
-            CreateTable(HalNavnBox.SelectedValue);
-        }
+        
 
         protected void HalNavnBox_SelectedIndexChanged(object sender, EventArgs e)
         {
