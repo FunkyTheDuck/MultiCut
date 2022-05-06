@@ -77,10 +77,17 @@ namespace CLDB
             listItems = list.GetItems(caml);
 
             ctx.Load(listItems);
-            ctx.ExecuteQuery();
+            try
+            {
+                ctx.ExecuteQuery();
+            }
+            catch
+            {
+                return null;
+                //den fejlede i at hente halls
+            }
 
             List<string> halls = new List<string>();
-
             foreach (ListItem item in listItems)
             {
                 halls.Add(item["Hal"].ToString());
