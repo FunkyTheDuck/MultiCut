@@ -12,7 +12,6 @@ namespace CLDB
 {
     public class DBConnect
     {
-
         SecureString pssword = new SecureString();
         string siteUrl = "https://365herningsholm.sharepoint.com/sites/SharePointData";
         ClientContext ctx;
@@ -24,7 +23,6 @@ namespace CLDB
         {
             ctx = new ClientContext(siteUrl);
             web = ctx.Web;
-
             foreach (char c in "igd94ndi".ToCharArray())
             {
                 pssword.AppendChar(c);
@@ -43,9 +41,7 @@ namespace CLDB
             {
                 return null;
             }
-
             List<ProductResult> products = new List<ProductResult>();
-
             foreach (ListItem item in listItems.Where(c => c["Hal"].ToString() == Hal))
             {
                 ProductResult result = new ProductResult {
@@ -55,13 +51,11 @@ namespace CLDB
                     Tekinker = item["Tekniker"].ToString(),
                     Tid = item["Tid"].ToString()
                 };
-
                 products.Add(result);
             }
             products.Reverse();
             return products;
         }  
-        
         public List<string> GetHalls()
         {
             ctx = new ClientContext(siteUrl);
@@ -83,10 +77,8 @@ namespace CLDB
             }
             catch
             {
-                return null;
-                //den fejlede i at hente halls
+                return null;  //den fejlede i at hente halls
             }
-
             List<string> halls = new List<string>();
             foreach (ListItem item in listItems)
             {

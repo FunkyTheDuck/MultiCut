@@ -23,23 +23,18 @@ namespace MultiCut
             {
                 FillComboBox();
             }
-            
         }
         public void CreateTable(string HalName)
         {
-
             List<ProductResult> lpr = repo.GetAll(HalName);
-
             if(lpr == null)
             {
-                lpr = oldList;
-                //query fejlede
+                lpr = oldList; //query fejlede
             }
             else
             {
                 oldList = lpr;
             }
-
             if (lpr == null)
                 return;
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
@@ -59,10 +54,8 @@ namespace MultiCut
                 tr.Cells.Add(EmnrNr);              
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
-                    
                     TableCell Resultat = new TableCell();
                     Resultat.CssClass = "spaceBetweenTR";
-                    
                     switch (pr.Resultat)
                     {
                         case "Ja":
@@ -89,8 +82,6 @@ namespace MultiCut
             HalNavnBox.DataSource = halls;
             HalNavnBox.DataBind();
         }
-        
-
         protected void HalNavnBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             CreateTable(HalNavnBox.SelectedValue);
