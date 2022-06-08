@@ -4,4 +4,3 @@ function reloadPage() {
     location.reload();
     
 }
-

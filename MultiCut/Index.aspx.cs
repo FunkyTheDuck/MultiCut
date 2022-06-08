@@ -10,6 +10,8 @@ using CLModel;
 using System.Drawing;
 using System.Threading;
 using System.Web.UI.HtmlControls;
+using System.IO;
+using System.Reflection;
 
 namespace MultiCut
 {
@@ -25,6 +27,7 @@ namespace MultiCut
                 FillComboBox();
             }
         }
+        
         public void CreateTable(string HalName)
         {
             List<ProductResult> lpr = repo.GetAll(HalName);
@@ -56,33 +59,44 @@ namespace MultiCut
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
                     DateTime resultTime = DateTime.Parse(pr.Tid).AddHours(2);
-                    DateTime timeYesterday = DateTime.UtcNow.AddDays(-1).AddHours(2);
-                    if(timeYesterday < resultTime)
+                    TableCell Resultat = new TableCell();
+                    Resultat.CssClass = "spaceBetweenTR";
+                    switch (pr.Resultat.ToLower())
                     {
-                        TableCell Resultat = new TableCell();
-                        Resultat.CssClass = "spaceBetweenTR";
-                        switch (pr.Resultat)
+                        case "ja":
+                            Resultat.BackColor = Color.LawnGreen;
+                            break;
+                        case "nej":
+                            Resultat.BackColor = Color.Red;
+                            break;
+                        case "måske":
+                            Resultat.BackColor = ColorTranslator.FromHtml("#ebeb00");
+                            break;
+                        case "måling igang":
+                            Resultat.BackColor = Color.White;
+                            break;
+                    }
+                    string testString = string.Empty;
+                    string timeString = resultTime.ToString();
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if(i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
                         {
-                            case "Ja":
-                                Resultat.BackColor = Color.LawnGreen;
-                                break;
-                            case "Nej":
-                                Resultat.BackColor = Color.Red;
-                                break;
-                            case "Måske":
-                                Resultat.BackColor = ColorTranslator.FromHtml("#ebeb00");
-                                break;
-                        }
-                        string testString = string.Empty;
-                        string timeString = resultTime.ToString();
-                        for (int i = 10; i < 16; i++)
+                            if(i == 5)
+                            {
+                                testString += "\n";
+                            }
+                        } else
                         {
                             testString += timeString[i];
                         }
-                        Resultat.Text = testString.Replace(":", "\n");
-                        Resultat.Font.Bold = true;
+                    }
+                    Resultat.Text = testString.Replace("-", "/");
+                    Resultat.Font.Bold = true;
+                    if(tr.Cells.Count < 31)
+                    {
                         tr.Cells.Add(Resultat);
-                    } 
+                    }
                 }
                 if(tr.Cells.Count > 1)
                 {
@@ -98,7 +112,9 @@ namespace MultiCut
         public void FillComboBox()
         {
             List<string> halls = repo.GetHalls();
-            halls.Add("Vælg hal");
+            if (halls == null)
+                return;
+            halls.Add("*Vælg hal*");
             halls.Reverse();
             HalNavnBox.DataSource = halls;
             HalNavnBox.DataBind();
