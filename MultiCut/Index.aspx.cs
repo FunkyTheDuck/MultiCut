@@ -17,52 +17,83 @@ namespace MultiCut
 {
     public partial class WebForm1 : Page
     {
+        //en instans af klassen Repository
         Repository repo = new Repository();
+        //en bool som bliver brugt til at checke om noget køre første gang
         bool first = true;
+        //laver en backup liste af modellen oldList
         List<ProductResult> oldList;
         protected void Page_Load(object sender, EventArgs e)
         {
+            //et if statement til at checke om det er første gang siden loader 
             if (!IsPostBack)
             {
+                //hvis det er første gang køres methoden FillComboBox();
                 FillComboBox();
             }
         }
         
-        public void CreateTable(string HalName)
+        //en private method som laver UI'en til resulterne og har en string i parameteren
+        private void CreateTable(string HalName)
         {
+            //laver en liste af modellen ProductResult som for sin værdi fra methoden GetAll i klassen Repository med denne methodes parameter i den parameter
             List<ProductResult> lpr = repo.GetAll(HalName);
+            //laver et if statement som checker på om listen lpr er ligmed null (hvis den er ligmed null har den fejlede i at hente dataen)
             if(lpr == null)
             {
-                lpr = oldList; //query fejlede
+                //hvis lpr er ligmed null, så for lpr sin værdi fra Listen oldList 
+                lpr = oldList; 
             }
             else
             {
+                //hvis lpr fik hentet noget data så "kopieres" det over i oldList for at gemme værdierne hvis lpr skulle fejle næste gang i at hente data
                 oldList = lpr;
             }
+            //hvis lpr stadig ikke har nogen værdier er det fordi den fejlede første gang så stoppes methoden med at køre
             if (lpr == null)
                 return;
+            
+            //laver et foreach loop som samler itemsne på EmnrNr og bagefter vælge den første
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
+                //laver et HTML TableRow
                 TableRow trxkstra = new TableRow();
+                //sætter TableRow'et højte til 20px
                 trxkstra.Height = 20;
+                //tilføjer class'en trxkstraBroder til TableRow'et
                 trxkstra.CssClass = "trxkstraBorder";
-                TableRow tr = new TableRow();                
+                //laver endnu et TableRow
+                TableRow tr = new TableRow(); 
+                //sætter dens højte til 16px
                 tr.Height = 16;
+                //tilføjer class'en trBorder til TableRow'et
                 tr.CssClass = "trBorder";
+                //laver et HTML TableCell
                 TableCell EmnrNr = new TableCell();
+                //gør TableCell font til bold
                 EmnrNr.Font.Bold = true;
+                //gør TableCell font size til 33px
                 EmnrNr.Font.Size = 33;
+                //sætter TableCell'ens tekst til at være ligmed modellen rp EmnrNr + :
                 EmnrNr.Text = rp.EmnrNr + ":";
+                //og giver den en width på 6px
                 EmnrNr.Width = 6;
+                //og tilføjer den til TableRowet tr
+                tr.Cells.Add(EmnrNr);           
                 
-                tr.Cells.Add(EmnrNr);              
+                //laver et foreach loop som køre for hver item i lpr hvor deres EmnrNr er ligmed den EmnrNr i rp modellen
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
+                    //opretter en DateTime som for værdien fra modellens Tid + 2 timer
                     DateTime resultTime = DateTime.Parse(pr.Tid).AddHours(2);
+                    //laver et HTML TableCell
                     TableCell Resultat = new TableCell();
+                    //og tilføjer den en class som hedder spaceBetweenTR
                     Resultat.CssClass = "spaceBetweenTR";
+                    //laver en switch case og checker på modellens Resultat i lower cases
                     switch (pr.Resultat.ToLower())
                     {
+                        //der er 4 cases og hver af dem ændre bare backgrunds farven til en anden farce
                         case "ja":
                             Resultat.BackColor = Color.LawnGreen;
                             break;
@@ -76,51 +107,70 @@ namespace MultiCut
                             Resultat.BackColor = Color.White;
                             break;
                     }
+                    //laver en string som for værdien fra en sorteret string
                     string testString = string.Empty;
+                    //laver en string som for værdien fra DateTime'en resultTime og den skal sorteres
                     string timeString = resultTime.ToString();
+                    //køre et for loop 16 gange
                     for (int i = 0; i < 16; i++)
                     {
+                        //hvis i er ligmed 6, 7, 8, 9 skal ingenting ske, men hvis i er ligmed 5 skal der tilføjes \n for at skifte ny linje
                         if(i == 5 || i == 6 || i == 7 || i == 8 || i == 9)
                         {
                             if(i == 5)
                             {
                                 testString += "\n";
                             }
-                        } else
+                        } else //hvis i ikke er ligmed 5, 6, 7, 8 eller 9 så tilføjes en char fra timeString til testString
                         {
                             testString += timeString[i];
                         }
                     }
+                    //efter skiftes alle "-" ud med "/" fordi "/" ser bedre ud
                     Resultat.Text = testString.Replace("-", "/");
+                    //så ændres fonten til at være bold
                     Resultat.Font.Bold = true;
-                    if(tr.Cells.Count < 31)
+                    //så checkes på TableRow'et tr child counter og hvis den er mere end 20 skal TableCell'en ikke tilføjes. Så kun de første 20 bliver addet
+                    if(tr.Cells.Count < 21)
                     {
                         tr.Cells.Add(Resultat);
                     }
                 }
+                //laver et hvis statement som køre kun når TableRow'et child counter er mere end 1. Så tilføjes der ikke noget før data'en er ude på UI'et
                 if(tr.Cells.Count > 1)
                 {
+                    //laver et if statement som checker på og det ikke er første gang. Hvis det ikke er første gang bliver trxkstra tilføjet til Table1
                     if(!first)
                     {
                         Table1.Rows.Add(trxkstra);
                     }
+                    //efter bliver first til false og tr addes til Table1
                     first = false;
                     Table1.Rows.Add(tr);
                 }
             }
         }
-        public void FillComboBox()
+
+        //en private methode om skal køres for at fulde comboboxen op med værdier
+        private void FillComboBox()
         {
+            //laver en list af strings som for sin værdier fra methoden GetHalls i klassen Repository
             List<string> halls = repo.GetHalls();
+            //hvis halls er null fejlede Query'en og methoden stopper
             if (halls == null)
                 return;
+            //hvis ikke tilføjes en stand ind værdi
             halls.Add("*Vælg hal*");
+            //også vendes listen om 
             halls.Reverse();
+            //så for comboboxen sine værdier fra listen halls
             HalNavnBox.DataSource = halls;
             HalNavnBox.DataBind();
         }
+        //en methode som køres hver gang brugeren ændre værdien i comboboxen
         protected void HalNavnBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //methoden kalder bare en anden methode
             CreateTable(HalNavnBox.SelectedValue);
         }
     }
