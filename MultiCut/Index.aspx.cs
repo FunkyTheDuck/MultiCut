@@ -53,9 +53,13 @@ namespace MultiCut
             if (lpr == null)
                 return;
             
-            //laver et foreach loop som samler itemsne på EmnrNr og bagefter vælge den første
+            //laver et foreach loop som samler itemsne på EmnrNr og bagefter vælge den første (rp is the row)
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
+
+
+
+                
                 //laver et HTML TableRow
                 TableRow trxkstra = new TableRow();
                 //sætter TableRow'et højte til 20px
@@ -63,7 +67,7 @@ namespace MultiCut
                 //tilføjer class'en trxkstraBroder til TableRow'et
                 trxkstra.CssClass = "trxkstraBorder";
                 //laver endnu et TableRow
-                TableRow tr = new TableRow(); 
+                TableRow tr = new TableRow();
                 //sætter dens højte til 16px
                 tr.Height = 16;
                 //tilføjer class'en trBorder til TableRow'et
@@ -72,16 +76,15 @@ namespace MultiCut
                 TableCell EmnrNr = new TableCell();
                 //gør TableCell font til bold
                 EmnrNr.Font.Bold = true;
+                EmnrNr.CssClass = "test";
                 //gør TableCell font size til 33px
                 EmnrNr.Font.Size = 33;
                 //sætter TableCell'ens tekst til at være ligmed modellen rp EmnrNr + :
                 EmnrNr.Text = rp.EmnrNr + ":";
-                //og giver den en width på 6px
-                EmnrNr.Width = 6;
                 //og tilføjer den til TableRowet tr
                 tr.Cells.Add(EmnrNr);           
                 
-                //laver et foreach loop som køre for hver item i lpr hvor deres EmnrNr er ligmed den EmnrNr i rp modellen
+                //laver et foreach loop som køre for hver item i lpr hvor deres EmnrNr er ligmed den EmnrNr i rp modellen (pr is the color/result in the row)
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
                     //opretter en DateTime som for værdien fra modellens Tid + 2 timer
@@ -93,7 +96,7 @@ namespace MultiCut
                     //laver en switch case og checker på modellens Resultat i lower cases
                     switch (pr.Resultat.ToLower())
                     {
-                        //der er 4 cases og hver af dem ændre bare backgrunds farven til en anden farce
+                        //der er 5 cases og hver af dem ændre bare backgrunds farven til en anden farce
                         case "ja":
                             Resultat.BackColor = Color.LawnGreen;
                             break;
@@ -101,10 +104,13 @@ namespace MultiCut
                             Resultat.BackColor = Color.Red;
                             break;
                         case "måske":
-                            Resultat.BackColor = ColorTranslator.FromHtml("#ebeb00");
+                            Resultat.BackColor = ColorTranslator.FromHtml("#ebeb00"); //gør den gul
                             break;
                         case "måling igang":
                             Resultat.BackColor = Color.White;
+                            break;
+                        case "pta":
+                            Resultat.BackColor = ColorTranslator.FromHtml("#32B4EC"); //gør det lyseblå
                             break;
                     }
                     //laver en string som for værdien fra en sorteret string
@@ -126,6 +132,7 @@ namespace MultiCut
                             testString += timeString[i];
                         }
                     }
+                    testString += " \n " + pr.SerieNummer;
                     //efter skiftes alle "-" ud med "/" fordi "/" ser bedre ud
                     Resultat.Text = testString.Replace("-", "/");
                     //så ændres fonten til at være bold

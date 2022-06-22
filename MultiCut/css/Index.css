@@ -21,11 +21,17 @@
     text-align: center;
     width: 70px;
 }
+td {
+    padding: 7px;
+}
 .trBorder {
-    border: 4px solid black;     
+    border: 4px solid black;
 }
 .trxkstraBorder {
     border: 1px solid;
     border-color: #adadad;
     border-left: 4px solid black;
+}
+.test {
+    width: auto;
 }

@@ -12,5 +12,7 @@ namespace CLModel
         public string Hal { get; set; } 
         public string Tekinker { get; set; } 
         public string Tid { get; set; }
+        public string OrderNummer { get; set; }
+        public string SerieNummer { get; set; }
     }
 }
