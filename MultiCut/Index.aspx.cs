@@ -97,10 +97,10 @@ namespace MultiCut
                     switch (pr.Resultat.ToLower())
                     {
                         //der er 5 cases og hver af dem ændre bare backgrunds farven til en anden farce
-                        case "ja":
+                        case "ok":
                             Resultat.BackColor = Color.LawnGreen;
                             break;
-                        case "nej":
+                        case "not ok":
                             Resultat.BackColor = Color.Red;
                             break;
                         case "måske":
