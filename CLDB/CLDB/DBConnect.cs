@@ -73,13 +73,16 @@ namespace CLDB
             foreach (ListItem item in listItems.Where(c => c["Hal"].ToString() == Hal && c["Resultat"].ToString() != "Skal måles").OrderByDescending(x => x["Modified"]))
             {
                 //for hver items laves en ny ProductResult model som for værdierne fra itemet som bliver checket på
-                ProductResult result = new ProductResult {
+                ProductResult result = new ProductResult();
+                
+                result = new ProductResult {
                     EmnrNr = item["Title"].ToString(),
+                    Afdeling = item["Afdeling"].ToString(),
                     Resultat = item["Resultat"].ToString(),
                     Hal = item["Hal"].ToString(),
                     Tekinker = item["Tekniker"].ToString(),
-                    Tid = item["Modified"].ToString(),
-                    OrderNummer = item["Ordernummer"].ToString(),
+                    Tid = item["Tid"].ToString(),
+                    OrderNummer = item["Ordrenr"].ToString(),
                     SerieNummer = item["S_x002f_N"].ToString() // "S_x002f_N" står for S/N 
                 };
                 result.EmnrNr = $"{result.EmnrNr} / {result.OrderNummer}";
@@ -122,10 +125,9 @@ namespace CLDB
             }
             catch
             {
-                //hvis Query'en fejlede returneres ingenting. Største årsager til Query fejl er fejl i email, kodeord eller navnet på listen
+                //hvis Query'en fejlede returneres ingenting
                 return null;
             }
-
             //en ny liste af strings som skal opbevarer hall navnene
             List<string> halls = new List<string>();
             //en foreach loop som køre igennem hvert item i listen i SharePointet
@@ -136,6 +138,19 @@ namespace CLDB
             }
             //returnere listen halls efter at have sorteret den så der kun er en af hver og formatteret den til en liste igen
             return halls.Distinct().ToList();
+        }
+        public List<string> GetAfdelinger(string hal)
+        {
+            //en ny liste af strings som skal opbevarer hall navnene
+            List<string> afdelinger = new List<string>();
+            //en foreach loop som køre igennem hvert item i listen i SharePointet
+            foreach (ListItem item in listItems.Where(x => x["Hal"].ToString() == hal))
+            {
+                //tilføjer hallen fra itemet til string listen
+                afdelinger.Add(item["Afdeling"].ToString());
+            }
+            //returnere listen halls efter at have sorteret den så der kun er en af hver og formatteret den til en liste igen
+            return afdelinger.Distinct().ToList();
         }
     }
 }

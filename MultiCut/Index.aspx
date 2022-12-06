@@ -14,7 +14,12 @@
 
 
     <form runat="server">
-        <asp:DropDownList ID="HalNavnBox" runat="server" OnSelectedIndexChanged="HalNavnBox_SelectedIndexChanged"  AutoPostBack="true"/>
+        <div class="row">
+            <div class="col-5"></div>
+            <asp:DropDownList class="col-1" ID="HalNavnBox" runat="server" OnSelectedIndexChanged="HalNavnBox_SelectedIndexChanged"  AutoPostBack="true"/>
+            <asp:DropDownList class="col-1" ID="AfdelingNavnBox" runat="server" OnSelectedIndexChanged="AfdelingNavnBox_SelectedIndexChanged"  AutoPostBack="true"/>
+            <div class="col-5"></div>
+        </div>
         <asp:Table ID="Table1" runat="server"  GridLines="Horizontal"></asp:Table>
     </form>
 </body>

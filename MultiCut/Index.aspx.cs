@@ -19,6 +19,8 @@ namespace MultiCut
     {
         //en instans af klassen Repository
         Repository repo = new Repository();
+
+        string afdelingsNavn = string.Empty;
         //en bool som bliver brugt til at checke om noget køre første gang
         bool first = true;
         //laver en backup liste af modellen oldList
@@ -36,10 +38,23 @@ namespace MultiCut
         //en private method som laver UI'en til resulterne og har en string i parameteren
         private void CreateTable(string HalName)
         {
+            List<ProductResult> lpr;
+            //første tjekkes på om der er valgt en afdeling som skal sortes på
+            if (!string.IsNullOrEmpty(afdelingsNavn))
+            {
+                //hvis der er valgt en afdeling så hentes alle værdierne fra SharePointet
+                lpr = repo.GetAll(HalName);
+                //bagefter bliver der sorteret på hvor kun de resultater med den rigtige afdeling bliver
+                lpr = lpr.Where(x => x.Afdeling == afdelingsNavn).ToList();
+            }
+            else
+            {
+                //hvis der ikke er valgt nogen afdeling bliver alle værdier fra SharePointet hentet
+                lpr = repo.GetAll(HalName);
+            }
             //laver en liste af modellen ProductResult som for sin værdi fra methoden GetAll i klassen Repository med denne methodes parameter i den parameter
-            List<ProductResult> lpr = repo.GetAll(HalName);
             //laver et if statement som checker på om listen lpr er ligmed null (hvis den er ligmed null har den fejlede i at hente dataen)
-            if(lpr == null)
+            if (lpr == null)
             {
                 //hvis lpr er ligmed null, så for lpr sin værdi fra Listen oldList 
                 lpr = oldList; 
@@ -56,10 +71,6 @@ namespace MultiCut
             //laver et foreach loop som samler itemsne på EmnrNr og bagefter vælge den første (rp is the row)
             foreach (ProductResult rp in lpr.GroupBy(x => x.EmnrNr).Select(x => x.FirstOrDefault()))
             {
-
-
-
-                
                 //laver et HTML TableRow
                 TableRow trxkstra = new TableRow();
                 //sætter TableRow'et højte til 20px
@@ -88,7 +99,7 @@ namespace MultiCut
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
                     //opretter en DateTime som for værdien fra modellens Tid + 2 timer
-                    DateTime resultTime = DateTime.Parse(pr.Tid).AddHours(2);
+                    DateTime resultTime = DateTime.Parse(pr.Tid);
                     //laver et HTML TableCell
                     TableCell Resultat = new TableCell();
                     //og tilføjer den en class som hedder spaceBetweenTR
@@ -179,6 +190,42 @@ namespace MultiCut
         {
             //methoden kalder bare en anden methode
             CreateTable(HalNavnBox.SelectedValue);
+            //efter at en hals data et blevet hentet bliver dens afdelinger hentet
+            FillAfdelingCombobox(HalNavnBox.SelectedValue);
+        }
+        //en methode som køres hver gang brugeren ændre værdien i afdelings comboboxen
+        protected void AfdelingNavnBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //methoden starter med at tjekke på om den standarde værdi er valgt 
+            if(AfdelingNavnBox.SelectedValue == "*afdeling*")
+            {
+                //hvis den er det så ændres stringen afdelingsNavn til at være tom, så der ikke bliver sorteret på afdelinger
+                afdelingsNavn = string.Empty;
+            }
+            //hvis den bliver ændret til en af afdelingerne
+            else
+            {
+                //så bliver stringen afdelingsNavn så til den valgte afdeling, så der bliver sorteret på den
+                afdelingsNavn = AfdelingNavnBox.SelectedValue;
+            }
+            //så kaldes CreateTable med hal navnet for at hente alt i hallen under den valgte afdeling
+            CreateTable(HalNavnBox.SelectedValue);
+        }
+        //en methode til at hente alle afdelinger inden i en hal som tages med i parameteren
+        private void FillAfdelingCombobox(string hal)
+        {
+            //opretter en liste som for sin værdier fra GetAfdelinger 
+            List<string> afdelinger = repo.GetAfdelinger(hal);
+            //hvis der ikke blev hentet nogen værdier så stopper methoden i at køre videre
+            if (afdelinger == null)
+                return;
+            //hvis der er værdier i listen, så tilføjes en værdi
+            afdelinger.Add("*afdeling*");
+            //for at få den nye tilføjet værdi overest vejnes der rundt på listen
+            afdelinger.Reverse();
+            //så sættes DataSource i comboboxen til at være ligmed listen af strings
+            AfdelingNavnBox.DataSource = afdelinger;
+            AfdelingNavnBox.DataBind();
         }
     }
 }

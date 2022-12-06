@@ -24,5 +24,10 @@ namespace CLBL
             //returner returværdien fra methoden GetHalls i klassen DBConnect
             return dbcon.GetHalls();
         }
+        //en public methode som retuner en liste af strings
+        public List<string> GetAfdelinger(string hal)
+        {
+            return dbcon.GetAfdelinger(hal);
+        }
     }
 }

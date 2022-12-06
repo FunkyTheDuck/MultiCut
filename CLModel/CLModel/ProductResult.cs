@@ -14,5 +14,6 @@ namespace CLModel
         public string Tid { get; set; }
         public string OrderNummer { get; set; }
         public string SerieNummer { get; set; }
+        public string Afdeling { get; set; }
     }
 }
