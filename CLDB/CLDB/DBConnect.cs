@@ -81,8 +81,8 @@ namespace CLDB
                     Resultat = item["Resultat"].ToString(),
                     Hal = item["Hal"].ToString(),
                     Tekinker = item["Tekniker"].ToString(),
-                    Tid = item["Tid"].ToString(),
-                    OrderNummer = item["Ordrenr"].ToString(),
+                    Tid = item["Modified"].ToString(),
+                    OrderNummer = item["Ordernummer"].ToString(),
                     SerieNummer = item["S_x002f_N"].ToString() // "S_x002f_N" står for S/N 
                 };
                 result.EmnrNr = $"{result.EmnrNr} / {result.OrderNummer}";
