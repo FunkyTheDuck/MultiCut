@@ -75,7 +75,6 @@ namespace CLDB
                 //for hver items laves en ny ProductResult model som for værdierne fra itemet som bliver checket på
                 ProductResult result = new ProductResult();
 
-                string temp = item["Afdeling"]?.ToString();
                 result = new ProductResult {
                     EmnrNr = item["Title"].ToString(),
                     Afdeling = item["Afdeling"]?.ToString(),
