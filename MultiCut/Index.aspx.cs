@@ -99,7 +99,7 @@ namespace MultiCut
                 foreach (ProductResult pr in lpr.Where(c => c.EmnrNr == rp.EmnrNr))
                 {
                     //opretter en DateTime som for værdien fra modellens Tid + 2 timer
-                    DateTime resultTime = DateTime.Parse(pr.Tid);
+                    DateTime resultTime = DateTime.Parse(pr.Tid).AddHours(1);
                     //laver et HTML TableCell
                     TableCell Resultat = new TableCell();
                     //og tilføjer den en class som hedder spaceBetweenTR

@@ -74,10 +74,11 @@ namespace CLDB
             {
                 //for hver items laves en ny ProductResult model som for værdierne fra itemet som bliver checket på
                 ProductResult result = new ProductResult();
-                
+
+                string temp = item["Afdeling"]?.ToString();
                 result = new ProductResult {
                     EmnrNr = item["Title"].ToString(),
-                    Afdeling = item["Afdeling"].ToString(),
+                    Afdeling = item["Afdeling"]?.ToString(),
                     Resultat = item["Resultat"].ToString(),
                     Hal = item["Hal"].ToString(),
                     Tekinker = item["Tekniker"].ToString(),
@@ -146,8 +147,11 @@ namespace CLDB
             //en foreach loop som køre igennem hvert item i listen i SharePointet
             foreach (ListItem item in listItems.Where(x => x["Hal"].ToString() == hal))
             {
-                //tilføjer hallen fra itemet til string listen
-                afdelinger.Add(item["Afdeling"].ToString());
+                if(item["Afdeling"] != null)
+                {
+                    //tilføjer hallen fra itemet til string listen
+                    afdelinger.Add(item["Afdeling"].ToString());
+                }
             }
             //returnere listen halls efter at have sorteret den så der kun er en af hver og formatteret den til en liste igen
             return afdelinger.Distinct().ToList();
