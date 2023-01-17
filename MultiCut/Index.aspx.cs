@@ -45,7 +45,10 @@ namespace MultiCut
                 //hvis der er valgt en afdeling så hentes alle værdierne fra SharePointet
                 lpr = repo.GetAll(HalName);
                 //bagefter bliver der sorteret på hvor kun de resultater med den rigtige afdeling bliver
-                lpr = lpr.Where(x => x.Afdeling == afdelingsNavn).ToList();
+                if(lpr != null)
+                {
+                    lpr = lpr.Where(x => x.Afdeling == afdelingsNavn).ToList();
+                }
             }
             else
             {
