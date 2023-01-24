@@ -209,7 +209,10 @@ namespace MultiCut
             else
             {
                 //så bliver stringen afdelingsNavn så til den valgte afdeling, så der bliver sorteret på den
-                afdelingsNavn = AfdelingNavnBox.SelectedValue;
+                if(AfdelingNavnBox.SelectedValue != null)
+                {
+                    afdelingsNavn = AfdelingNavnBox.SelectedValue;
+                }
             }
             //så kaldes CreateTable med hal navnet for at hente alt i hallen under den valgte afdeling
             CreateTable(HalNavnBox.SelectedValue);
