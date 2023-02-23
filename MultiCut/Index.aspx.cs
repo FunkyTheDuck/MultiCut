@@ -38,6 +38,7 @@ namespace MultiCut
         //en private method som laver UI'en til resulterne og har en string i parameteren
         private void CreateTable(string HalName)
         {
+            GC.Collect();
             List<ProductResult> lpr;
             //første tjekkes på om der er valgt en afdeling som skal sortes på
             if (!string.IsNullOrEmpty(afdelingsNavn))
