@@ -27,7 +27,14 @@ namespace CLBL
         //en public methode som retuner en liste af strings
         public List<string> GetAfdelinger(string hal)
         {
-            return dbcon.GetAfdelinger(hal);
+            try
+            {
+                return dbcon.GetAfdelinger(hal);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

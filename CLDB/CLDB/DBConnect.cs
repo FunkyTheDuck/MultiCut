@@ -143,17 +143,24 @@ namespace CLDB
         {
             //en ny liste af strings som skal opbevarer hall navnene
             List<string> afdelinger = new List<string>();
-            //en foreach loop som køre igennem hvert item i listen i SharePointet
-            foreach (ListItem item in listItems.Where(x => x["Hal"].ToString() == hal))
+            if(listItems != null)
             {
-                if(item["Afdeling"] != null)
+                //en foreach loop som køre igennem hvert item i listen i SharePointet
+                foreach (ListItem item in listItems.Where(x => x["Hal"].ToString() == hal))
                 {
-                    //tilføjer hallen fra itemet til string listen
-                    afdelinger.Add(item["Afdeling"].ToString());
+                    if (item["Afdeling"] != null)
+                    {
+                        //tilføjer hallen fra itemet til string listen
+                        afdelinger.Add(item["Afdeling"].ToString());
+                    }
                 }
             }
-            //returnere listen halls efter at have sorteret den så der kun er en af hver og formatteret den til en liste igen
-            return afdelinger.Distinct().ToList();
+            if(afdelinger != null)
+            {
+                //returnere listen halls efter at have sorteret den så der kun er en af hver og formatteret den til en liste igen
+                return afdelinger.Distinct().ToList();
+            }
+            return null;
         }
     }
 }

@@ -38,17 +38,19 @@ namespace MultiCut
         //en private method som laver UI'en til resulterne og har en string i parameteren
         private void CreateTable(string HalName)
         {
-            GC.Collect();
             List<ProductResult> lpr;
             //første tjekkes på om der er valgt en afdeling som skal sortes på
             if (!string.IsNullOrEmpty(afdelingsNavn))
             {
-                //hvis der er valgt en afdeling så hentes alle værdierne fra SharePointet
-                lpr = repo.GetAll(HalName);
-                //bagefter bliver der sorteret på hvor kun de resultater med den rigtige afdeling bliver
-                if(lpr != null)
+                //hvis der er valgt en afdeling så hentes alle værdierne fra SharePointet og sortes på listen så den kun har værdierne hvor afdelingen matcher
+                try
                 {
-                    lpr = lpr.Where(x => x.Afdeling == afdelingsNavn).ToList();
+                    lpr = repo.GetAll(HalName).Where(x => x.Afdeling == afdelingsNavn).ToList();
+                }
+                catch
+                {
+                    //hvis der skete en fejl i at hente eller at sorter listen, så instantiseres den så koden kan gå videre
+                    lpr = new List<ProductResult>();
                 }
             }
             else
@@ -222,7 +224,15 @@ namespace MultiCut
         private void FillAfdelingCombobox(string hal)
         {
             //opretter en liste som for sin værdier fra GetAfdelinger 
-            List<string> afdelinger = repo.GetAfdelinger(hal);
+            List<string> afdelinger;
+            try
+            {
+                afdelinger = repo.GetAfdelinger(hal);
+            }
+            catch
+            {
+                return;
+            }
             //hvis der ikke blev hentet nogen værdier så stopper methoden i at køre videre
             if (afdelinger == null)
                 return;
