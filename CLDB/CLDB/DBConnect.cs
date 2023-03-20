@@ -70,31 +70,26 @@ namespace CLDB
 
             //laver en foreach loop som køre for hver item i SharePoint listen hvor Hal i modellen er ligmed Hal i parameteren og Resultat i modellen ikke er Skal måles 
             // og data'en er sorteret på Modified som er en dato i SharePointet
-            foreach (ListItem item in listItems.Where(c => c["Hal"].ToString() == Hal && c["Resultat"].ToString() != "Skal måles").OrderByDescending(x => x["Modified"]))
+            if(listItems != null)
+            {
+                foreach (ListItem item in listItems.Where(c => c["Hal"].ToString() == Hal && c["Resultat"].ToString() != "Skal måles").OrderByDescending(x => x["Modified"]))
             {
                 //for hver items laves en ny ProductResult model som for værdierne fra itemet som bliver checket på
-                ProductResult result = new ProductResult();
-                try
+                ProductResult result = new ProductResult
                 {
-                    result = new ProductResult
-                    {
-                        EmnrNr = item["Title"].ToString(),
-                        Afdeling = item["Afdeling"]?.ToString(),
-                        Resultat = item["Resultat"].ToString(),
-                        Hal = item["Hal"].ToString(),
-                        Tekinker = item["Tekniker"].ToString(),
-                        Tid = item["Modified"].ToString(),
-                        OrderNummer = item["Ordrenr"].ToString(),
-                        SerieNummer = item["S_x002f_N"].ToString() // "S_x002f_N" står for S/N 
-                    };
-                    result.EmnrNr = $"{result.EmnrNr} / {result.OrderNummer}";
-                    //efter tilføjes den nye model til listen products
-                    products.Add(result);
-                }
-                catch
-                {
-
-                }
+                    EmnrNr = item["Title"].ToString(),
+                    Afdeling = item["Afdeling"]?.ToString(),
+                    Resultat = item["Resultat"].ToString(),
+                    Hal = item["Hal"].ToString(),
+                    Tekinker = item["Tekniker"].ToString(),
+                    Tid = item["Modified"].ToString(),
+                    OrderNummer = item["Ordrenr"].ToString(),
+                    SerieNummer = item["S_x002f_N"].ToString() // "S_x002f_N" står for S/N 
+                };
+                result.EmnrNr = $"{result.EmnrNr} / {result.OrderNummer}";
+                //efter tilføjes den nye model til listen products
+                products.Add(result);
+            }
             }
             //methoden slutter med at returner hele listen products
             return products;
