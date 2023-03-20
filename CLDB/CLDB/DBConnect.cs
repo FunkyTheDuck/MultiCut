@@ -16,7 +16,7 @@ namespace CLDB
         //laver en secure string som bruges som kodeord når programmet skal tilgå SharePointet
         SecureString pssword = new SecureString();
         //laver en string som har værdien af URL'en til SharePointes home screen
-        string siteUrl = "https://multicutdk.sharepoint.com/sites/MulticutResultat";
+        string siteUrl = "https://365herningsholm.sharepoint.com/sites/SharePointData";
 
         ClientContext ctx;
 
@@ -37,13 +37,13 @@ namespace CLDB
             //tager connectionen og henter Web delen af den
             web = ctx.Web;
             //laver et foreach loop som looper igennem en CharArray (CharArray skal være ligmed brugerens adgangskode)
-            foreach (char c in "Gm27Libm!2xKv?da*".ToCharArray())
+            foreach (char c in "xua33ubf".ToCharArray())
             {
                 //for hver Char i loopet tages den Char og den tilføjes til SecureString'en pssword
                 pssword.AppendChar(c);
             }
             //sætter connectionen Credentials til at være ligmed brugerens Email og Kodeord
-            ctx.Credentials = new SharePointOnlineCredentials("herningsholm@multicut.dk", pssword);
+            ctx.Credentials = new SharePointOnlineCredentials("simo944k@herningsholm.dk", pssword);
             //sætter listen til at være ligmed listen i SharePointet hvor navnet er "ProductionList"
             list = web.Lists.GetByTitle("ProductionList");
             //laver en Query som skal hente all items i en liste
@@ -75,7 +75,8 @@ namespace CLDB
                 foreach (ListItem item in listItems.Where(c => c["Hal"].ToString() == Hal && c["Resultat"].ToString() != "Skal måles").OrderByDescending(x => x["Modified"]))
                 {
                     //for hver items laves en ny ProductResult model som for værdierne fra itemet som bliver checket på
-                    ProductResult result = new ProductResult
+                    ProductResult result = new ProductResult();
+                    result = new ProductResult
                     {
                         EmnrNr = item["Title"].ToString(),
                         Afdeling = item["Afdeling"]?.ToString(),
@@ -83,7 +84,7 @@ namespace CLDB
                         Hal = item["Hal"].ToString(),
                         Tekinker = item["Tekniker"].ToString(),
                         Tid = item["Modified"].ToString(),
-                        OrderNummer = item["Ordrenr"].ToString(),
+                        OrderNummer = item["Ordernummer"].ToString(),
                         SerieNummer = item["S_x002f_N"].ToString() // "S_x002f_N" står for S/N 
                     };
                     result.EmnrNr = $"{result.EmnrNr} / {result.OrderNummer}";
@@ -103,13 +104,13 @@ namespace CLDB
             //tager connectionen og henter Web delen af den
             web = ctx.Web;
             //laver et foreach loop som looper igennem en CharArray (CharArray skal være ligmed brugerens adgangskode)
-            foreach (char c in "Gm27Libm!2xKv?da*".ToCharArray())
+            foreach (char c in "xua33ubf".ToCharArray())
             {
                 //for hver Char i loopet tages den Char og den tilføjes til SecureString'en pssword
                 pssword.AppendChar(c);
             }
             //sætter connectionen Credentials til at være ligmed brugerens Email og Kodeord
-            ctx.Credentials = new SharePointOnlineCredentials("herningsholm@multicut.dk", pssword);
+            ctx.Credentials = new SharePointOnlineCredentials("simo944k@herningsholm.dk", pssword);
             //sætter listen til at være ligmed listen i SharePointet hvor navnet er "ProductionList"
             list = web.Lists.GetByTitle("ProductionList");
             //laver en Query som skal hente all items i en liste
